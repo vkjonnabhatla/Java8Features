@@ -1,4 +1,4 @@
-package org.java8.example;
+package org.design.patterns;
 
 public class FactoryDesignPattern {
 
