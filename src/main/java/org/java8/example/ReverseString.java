@@ -22,20 +22,32 @@ public class ReverseString {
         
         
         
-        //Another way of reversing the string/integer array.
+        //************ Another way of reversing the string/integer array. ******************
         Integer start = 0;
-		Integer end = array.length - 1;
-		
-		while(start < end){
-			Integer temp = array[start];
-			array[start] = array[end];
-			array[end] = temp;
-			start++;
-			end--;
-		}
+	Integer end = array.length - 1;
+
+	while(start < end){
+		Integer temp = array[start];
+		array[start] = array[end];
+		array[end] = temp;
+		start++;
+		end--;
+	}
         System.out.println(" Reverse string is :: " + new String(charArr));
         
-        
+	    
+        //*************  Without using temp variable ********************
+	//It works incase of integers/float/double
+	Integer start = 0;
+	Integer end = array.length - 1;
+
+	while(start<end){
+		array[start] = array[start] + array[end];
+		array[end] = array[start] - array[end];
+		array[start] = array[start] - array[end];
+		start++;
+		end--;
+	}
         
         
         /*StringBuffer str1 = sb.reverse();
