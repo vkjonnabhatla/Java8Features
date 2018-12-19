@@ -19,7 +19,25 @@ public class ReverseString {
         System.out.println(" Reverse string is :: "+new String(charArr));
         System.out.println(" Reverse string is :: "+new String(charArr));
         //display
-
+        
+        
+        
+        //Another way of reversing the string/integer array.
+        Integer start = 0;
+		Integer end = array.length - 1;
+		
+		while(start < end){
+			Integer temp = array[start];
+			array[start] = array[end];
+			array[end] = temp;
+			start++;
+			end--;
+		}
+        System.out.println(" Reverse string is :: " + new String(charArr));
+        
+        
+        
+        
         /*StringBuffer str1 = sb.reverse();
         System.out.println("Reverse String is: "+ str1);
         char[] seq = str.toCharArray();
