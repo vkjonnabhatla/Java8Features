@@ -17,26 +17,34 @@ import java.util.*;
     # Sample input for  - eBayApps
     Output --> eBayPayApps, JShared, ebaySharedApps, ALib, SEShared, Core*/
 public class FindDependentLibraries {
-    public static void main(String[] args) {
-         LinkedHashSet<String> output = new LinkedHashSet<>();
-         Map<String, List<String>> inputLibraryMap = new HashMap<>();
-         inputLibraryMap.put("eBayApps", Arrays.asList("eBayPayApps","JShared"));
-         inputLibraryMap.put("JWGroup", Arrays.asList("TxnGroup", "JShared"));
-         inputLibraryMap.put("JShared", Arrays.asList("ebaySharedApps"));
-         inputLibraryMap.put("ebaySharedApps", Arrays.asList("SEShared", "Core"));
-         inputLibraryMap.put("eBayPayApps", Arrays.asList("ebaySharedApps", "ALib"));
-         inputLibraryMap.put("TxnGroup", Arrays.asList("ebaySharedApps", "Wlib"));
-         System.out.println(getDependentLibraries("eBayApps", output, inputLibraryMap));
+
+    public static Map<String, List<String>> inputLibraryMap = null;
+    public static LinkedHashSet<String> output = null;
+
+    static{
+        output = new LinkedHashSet<>();
+        inputLibraryMap = new HashMap<>();
+        inputLibraryMap.put("eBayApps", Arrays.asList("eBayPayApps","JShared"));
+        inputLibraryMap.put("JWGroup", Arrays.asList("TxnGroup", "JShared"));
+        inputLibraryMap.put("JShared", Arrays.asList("ebaySharedApps"));
+        inputLibraryMap.put("ebaySharedApps", Arrays.asList("SEShared", "Core"));
+        inputLibraryMap.put("eBayPayApps", Arrays.asList("ebaySharedApps", "ALib"));
+        inputLibraryMap.put("TxnGroup", Arrays.asList("ebaySharedApps", "Wlib"));
     }
 
-    public static LinkedHashSet<String> getDependentLibraries(String inputLibraryName, LinkedHashSet<String> output, Map<String, List<String>> inputLibraryMap){
+
+    public static void main(String[] args) {
+         System.out.println(getDependentLibraries("eBayApps"));
+    }
+
+    public static LinkedHashSet getDependentLibraries(String inputLibraryName){
         if(inputLibraryMap.isEmpty()){
             return null;
         }
         List<String> dependentLibraries = inputLibraryMap.get(inputLibraryName);
         if(Objects.nonNull(dependentLibraries)){
             output.addAll(dependentLibraries);
-            dependentLibraries.stream().forEach(library -> getDependentLibraries(library, output, inputLibraryMap));
+            dependentLibraries.stream().forEach(library -> getDependentLibraries(library));
         }
         return output;
     }
