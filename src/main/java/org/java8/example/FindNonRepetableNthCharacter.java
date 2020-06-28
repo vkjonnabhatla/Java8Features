@@ -20,8 +20,11 @@ public class FindNonRepetableNthCharacter {
 
 		// Insertion order not preserving with below statement
 		// Map<Character, Long> groupByChars = streamOfCharacters.collect(Collectors.groupingBy(Character::charValue, Collectors.counting()));
-		Map<Character, Long> groupByChars = streamOfCharacters.collect(Collectors.groupingBy(Character::charValue,
-				LinkedHashMap::new, Collectors.mapping(Character::charValue, Collectors.counting())));
+
+		Map<Character, Long> groupByChars = streamOfCharacters.collect(Collectors.groupingBy(Character::charValue, Collectors.counting()));
+		System.out.println(groupByChars);
+		//Map<Character, Long> groupByChars = streamOfCharacters.collect(Collectors.groupingBy(Character::charValue,
+		//		LinkedHashMap::new, Collectors.mapping(Character::charValue, Collectors.counting())));
 
 		List<Character> charList = groupByChars.entrySet().stream()
 				                                          .filter(e -> e.getValue() == 1)

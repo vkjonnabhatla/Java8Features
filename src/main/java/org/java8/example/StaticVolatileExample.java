@@ -22,9 +22,9 @@ public class StaticVolatileExample {
 		// });
 		System.out.println("3");
 
-		Thread.sleep(1000);
+		Thread.sleep(5000);
 		flag = true;
-		Thread.sleep(1000);
+		Thread.sleep(5000);
 		flag = false;
 		System.out.println("4");
 	}
