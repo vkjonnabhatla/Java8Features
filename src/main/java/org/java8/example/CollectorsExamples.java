@@ -1,9 +1,11 @@
 package org.java8.example;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.*;
 import java.util.function.BinaryOperator;
+import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -170,7 +172,63 @@ public class CollectorsExamples {
                 Collectors.groupingBy(Employee::getEmpName, Collectors.toList())));
         System.out.println(group1);
 
+        // Collectors.toMap with merge function
+        Map<String, Integer> map = list.stream().collect(Collectors.toMap(Employee::getEmpName, Employee::getDepartmentNo));
+        System.out.println(map);
 
+        // toMap() with merge function will work if user try to put same key into map.. the function returns the value object
+        // Function.identity() returns same object
+        list.add(new Employee(112, "Venkata", 10, LocalDate.of(2018, Month.JANUARY, 10), 180000));
+        BinaryOperator<Employee> binaryOperator = (e1, e2) -> e2;
+        Map<String, Employee> map1 = list.stream().collect(Collectors.toMap(Employee::getEmpName, Function.identity(), binaryOperator));
+        System.out.println(map1);
+
+        // toMap with supplier function
+        Map<String, Employee> map2 = list.stream().collect(Collectors.toMap(Employee::getEmpName, Function.identity(), binaryOperator, TreeMap::new));
+        System.out.println(map2);
+
+        //reducing function
+        BinaryOperator<Employee> binaryOperator1 = (e1, e2) -> {
+            e1.setEmpName(e1.getEmpName().concat(e2.getEmpName()));
+            return e1;
+        };
+        BinaryOperator<Double> binaryOperator2 = (e1, e2) -> {
+            return e1.doubleValue() + e2.doubleValue();
+        };
+
+        Optional<Employee> employee = list.parallelStream().collect(Collectors.reducing(binaryOperator1));
+        System.out.println(employee.get().getEmpName());
+
+        Employee employee12 = new Employee(113, "Venkata3", 10, LocalDate.of(2018, Month.JANUARY, 10), 180000);
+        Employee employee123 = list.parallelStream().collect(Collectors.reducing(employee12, binaryOperator1));
+        System.out.println("employee123 :: " + employee123);
+
+        Optional<Double> salarySum = list.parallelStream().map(employee1 -> employee1.getSalary()).collect(Collectors.reducing(binaryOperator2));
+        System.out.println(salarySum.get().longValue());
+
+        Optional<Double> finalSal =  list.parallelStream().map(employee1 -> employee1.getSalary()).reduce((a, b) -> a + b);
+        System.out.println(finalSal);
+
+        Double finalSal1 =  list.parallelStream().map(employee1 -> employee1.getSalary()).reduce(1.0, (a, b) -> a + b);
+        System.out.println(finalSal1);
+
+        Double finalSal2 =  list.parallelStream().map(employee1 -> employee1.getSalary()).reduce(0.0, Double::sum);
+        System.out.println(finalSal2);
+
+
+        List<String> items = Arrays.asList("apple", "apple", "banana", "apple", "orange", "banana", "papaya","papaya");
+        Map<String, Long> finalMap = new LinkedHashMap<>();
+        Map<String, Long> itemsMap = items.parallelStream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+        System.out.println(itemsMap);
+        itemsMap.entrySet().stream().sorted(Map.Entry.<String, Long> comparingByValue().reversed()).forEach(e -> finalMap.put(e.getKey(), e.getValue()));
+        System.out.println(finalMap);
+
+        //If we want to sort keys
+        Map<String, Long> itemsTreeMap = items.parallelStream().collect(Collectors.groupingBy(Function.identity(), TreeMap::new, Collectors.counting()));
+        System.out.println(itemsTreeMap);
+
+        String val = list.parallelStream().map(e -> e.getDepartmentNo()).collect(Collectors.reducing(" ", x -> String.valueOf(x), (a, b) -> a + b));
+        System.out.println(val);
     }
 
     public void doCollectorOperations(List<Employee> list){
