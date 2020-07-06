@@ -17,7 +17,11 @@ public class April_2_4_diameter_of_binary_tree {
 
     public static void main(String[] args) {
         April_2_4_diameter_of_binary_tree obj = new April_2_4_diameter_of_binary_tree();
-        obj.diameterOfBinaryTree(null);
+        TreeNode rootNode = new TreeNode(1);
+        rootNode.setLeft(new TreeNode(2));
+        //rootNode.setRight(new TreeNode(3));
+        System.out.println(obj.height(rootNode));
+        System.out.println(obj.diameterOfBinaryTree(rootNode));
     }
 
     public int diameterOfBinaryTree(TreeNode node){
