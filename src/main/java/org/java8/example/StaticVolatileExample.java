@@ -1,8 +1,10 @@
 package org.java8.example;
 
+import java.util.concurrent.PriorityBlockingQueue;
+
 public class StaticVolatileExample {
 
-	private static volatile boolean flag = false;
+	private static boolean flag = false;
 
 	public static void main(String[] args) throws Exception {
 
@@ -20,7 +22,7 @@ public class StaticVolatileExample {
 		}).start();
 
 		// });
-		System.out.println("3");
+		System.out.println("3" + Thread.currentThread().getName());
 
 		Thread.sleep(5000);
 		flag = true;
